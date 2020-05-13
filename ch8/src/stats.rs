@@ -7,21 +7,15 @@
 
 use std::collections::HashMap;
 
+#[derive(Debug, PartialEq)]
 pub struct ListStats {
     pub mean: f64,
     pub median: f64,
     pub mode: i64
 }
 
-pub fn print(stats: &ListStats) {
-    println!("Statistics:");
-    println!("mean: {}", stats.mean);
-    println!("median: {}", stats.median);
-    println!("mode: {}", stats.mode);
-}
-
 /// vec must be sorted.
-pub fn get(list: &Vec<i64>) -> Option<ListStats> {
+pub fn get_stats(list: &Vec<i64>) -> Option<ListStats> {
     let first = list.first()?;
     let mut sum = *first;
     let mut occurrences: HashMap<i64, usize> = HashMap::new();
@@ -56,4 +50,17 @@ fn get_median(list: &Vec<i64>) -> Option<f64> {
     }
 }
 
-#cfg(test)
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let expected = ListStats {
+            mean: 11.0,
+            median: 16.0,
+            mode: 8,
+        };
+        assert_eq!(get_stats(&vec![1, 2, 8, 16, 32, 8, 10]), Some(expected));
+    }
+}
